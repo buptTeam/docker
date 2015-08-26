@@ -9,6 +9,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 
 import model.User;
 
@@ -25,7 +26,7 @@ public class UserBean extends HibernateBase {
 	}
 
 	@POST
-	public String addCourse(@FormParam("name") String name,
+	public Response addCourse(@FormParam("name") String name,
 			@FormParam("password") String password,
 			@FormParam("mail") String mail) throws HibernateException {
 		try {
@@ -43,7 +44,7 @@ public class UserBean extends HibernateBase {
 	}
 
 	@GET
-	public String getAllUsers() throws HibernateException {
+	public Response getAllUsers() throws HibernateException {
 		try {
 			String queryString = "from User";
 			beginTransaction();
@@ -64,7 +65,7 @@ public class UserBean extends HibernateBase {
 
 	@GET
 	@Path("id/{id}")
-	public String getUserByid(@PathParam("id") int id)
+	public Response getUserByid(@PathParam("id") int id)
 			throws HibernateException {
 		try {
 			String queryString = "from User where id=?";
@@ -83,7 +84,7 @@ public class UserBean extends HibernateBase {
 
 	@GET
 	@Path("name/{name}")
-	public String getUserByname(@PathParam("name") String name)
+	public Response getUserByname(@PathParam("name") String name)
 			throws HibernateException {
 		try {
 			String queryString = "from User where name=?";
@@ -102,7 +103,7 @@ public class UserBean extends HibernateBase {
 
 	@GET
 	@Path("mail/{name}")
-	public String getUserBymail(@PathParam("name") String name)
+	public Response getUserBymail(@PathParam("name") String name)
 			throws HibernateException {
 		try {
 			String queryString = "from User where mail=?";
@@ -121,7 +122,7 @@ public class UserBean extends HibernateBase {
 
 	@DELETE
 	@Path("{id}")
-	public String deleteUser(@PathParam("id") int id) {
+	public Response deleteUser(@PathParam("id") int id) {
 		try {
 			beginTransaction();
 			User user = (User) session.load(User.class, id);

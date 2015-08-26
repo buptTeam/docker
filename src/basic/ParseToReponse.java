@@ -2,6 +2,8 @@ package basic;
 
 import java.io.IOException;
 
+import javax.ws.rs.core.Response;
+
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +20,7 @@ public class ParseToReponse {
 		this.Length=len;
 	}
 	
-	public static String parse(String status,String mes,Object entity,int len) {
+	public static Response parse(String status,String mes,Object entity,int len) {
 		String mesString=null;
 		ParseToReponse parseToReponse=new ParseToReponse(status, mes, entity,len);
 		ObjectMapper mapper = new ObjectMapper(); 
@@ -34,7 +36,7 @@ public class ParseToReponse {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return mesString;
+		return Response.ok(mesString).header("Access-Control-Allow-Origin", "*").build();   
 		
 	}
 

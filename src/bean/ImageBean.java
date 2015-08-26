@@ -13,6 +13,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 
 import model.Image;
 import model.User;
@@ -37,7 +38,7 @@ public class ImageBean extends HibernateBase {
 	}
 
 	@POST
-	public String addImage(@FormParam("dockerFilePath") String dockerFilePath,
+	public Response addImage(@FormParam("dockerFilePath") String dockerFilePath,
 			@FormParam("repertory") String repertory,
 			@FormParam("userId") String userId,
 			@FormParam("imageName") String imageName,
@@ -118,14 +119,13 @@ public class ImageBean extends HibernateBase {
 	}
 
 	@GET
-	public String getAllImages() throws HibernateException {
+	public Response getAllImages() throws HibernateException {
 		try {
 			String queryString = "from Image";
 			beginTransaction();
 			Query query = session.createQuery(queryString);
 			List<Image> iamges = query.list();
-			return ParseToReponse.parse("1", "all images data", iamges,
-					iamges.size());
+			return  ParseToReponse.parse("2", "all images", iamges, iamges.size());
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -136,7 +136,7 @@ public class ImageBean extends HibernateBase {
 
 	@GET
 	@Path("id/{id}")
-	public String getUserByid(@PathParam("id") int id)
+	public Response getUserByid(@PathParam("id") int id)
 			throws HibernateException {
 		try {
 			String queryString = "from Image where id=?";
@@ -156,7 +156,7 @@ public class ImageBean extends HibernateBase {
 
 	@GET
 	@Path("userId/{id}")
-	public String getUserByUserId(@PathParam("id") int id)
+	public Response getUserByUserId(@PathParam("id") int id)
 			throws HibernateException {
 		try {
 			String queryString = "from Image where ownerId=?";
@@ -176,7 +176,7 @@ public class ImageBean extends HibernateBase {
 
 	@GET
 	@Path("imageName")
-	public String getUserByImageName(@QueryParam("imageName") String name)
+	public Response getUserByImageName(@QueryParam("imageName") String name)
 			throws HibernateException {
 		try {
 			String queryString = "from Image where name=?";
@@ -195,7 +195,7 @@ public class ImageBean extends HibernateBase {
 	}
 	@GET
 	@Path("search")
-	public String searchImage(@QueryParam("imageName") String name)
+	public Response searchImage(@QueryParam("imageName") String name)
 			throws HibernateException {
 		try {
 			DockerClient dockerClient = MyDockerClient.getDockerClient();
@@ -212,7 +212,7 @@ public class ImageBean extends HibernateBase {
 
 	@DELETE
 	@Path("{id}")
-	public String deleteUser(@PathParam("id") int id) {
+	public Response deleteUser(@PathParam("id") int id) {
 		try {
 			beginTransaction();
 			Image image = (Image) session.load(Image.class, id);

@@ -8,6 +8,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -32,7 +33,7 @@ public class ContainerBean extends HibernateBase {
 	}
 
 	@POST
-	public String createContainer(
+	public Response createContainer(
 			@FormParam("containerName") String containerName,
 			@FormParam("userId") String userId, @FormParam("cmd") String cmd,
 			@FormParam("imageName") String imageName) throws HibernateException {
@@ -96,7 +97,7 @@ public class ContainerBean extends HibernateBase {
 	}
 
 	@GET
-	public String getAllContainers() throws HibernateException {
+	public Response getAllContainers() throws HibernateException {
 		try {
 			String queryString = "from Container";
 			beginTransaction();
@@ -114,7 +115,7 @@ public class ContainerBean extends HibernateBase {
 
 	@GET
 	@Path("id/{id}")
-	public String getContainerByid(@PathParam("id") int id)
+	public Response getContainerByid(@PathParam("id") int id)
 			throws HibernateException {
 		try {
 			String queryString = "from Container where id=?";
@@ -134,7 +135,7 @@ public class ContainerBean extends HibernateBase {
 
 	@GET
 	@Path("info/id/{id}")
-	public String getContainerInfoByid(@PathParam("id") int id)
+	public Response getContainerInfoByid(@PathParam("id") int id)
 			throws HibernateException {
 		try {
 			System.out.println("hello");
@@ -161,7 +162,7 @@ public class ContainerBean extends HibernateBase {
 	
 	@POST
 	@Path("start/id/{id}")
-	public String startContainerInfoByid(@PathParam("id") int id)
+	public Response startContainerInfoByid(@PathParam("id") int id)
 			throws HibernateException {
 		try {
 			System.out.println("hello");
@@ -207,7 +208,7 @@ public class ContainerBean extends HibernateBase {
 	
 	@POST
 	@Path("stop/id/{id}")
-	public String stopContainerInfoByid(@PathParam("id") int id)
+	public Response stopContainerInfoByid(@PathParam("id") int id)
 			throws HibernateException {
 		try {
 			System.out.println("hello");
@@ -254,7 +255,7 @@ public class ContainerBean extends HibernateBase {
 	//
 	@GET
 	@Path("userId/{id}")
-	public String getContainerByUserId(@PathParam("id") int id)
+	public Response getContainerByUserId(@PathParam("id") int id)
 			throws HibernateException {
 		try {
 			String queryString = "from Container where ownerId=?";
@@ -274,7 +275,7 @@ public class ContainerBean extends HibernateBase {
 
 	@GET
 	@Path("userId/{id}/containerName/{name}")
-	public String getUserByImageName(@PathParam("id") int id,
+	public Response getUserByImageName(@PathParam("id") int id,
 			@PathParam("name") String name) throws HibernateException {
 		try {
 			String queryString = "from Container where owner_id=? and name=?";
@@ -295,7 +296,7 @@ public class ContainerBean extends HibernateBase {
 	
 	@GET
 	@Path("log/id/{id}")
-	public String getlogByImageName(@PathParam("id") int id,
+	public Response getlogByImageName(@PathParam("id") int id,
 			@PathParam("name") String name) throws HibernateException {
 		try {
 			System.out.println("hello");
@@ -373,7 +374,7 @@ public class ContainerBean extends HibernateBase {
 	//
 	@DELETE
 	@Path("{id}")
-	public String deleteUser(@PathParam("id") int id) {
+	public Response deleteUser(@PathParam("id") int id) {
 		try {
 			String queryString = "from Container where id=?";
 			beginTransaction();
