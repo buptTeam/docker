@@ -38,12 +38,12 @@ public class ImageBean extends HibernateBase {
 	}
 
 	@POST
-	public Response addImage(@FormParam("dockerFilePath") String dockerFilePath,
-			@FormParam("repertory") String repertory,
-			@FormParam("userId") String userId,
-			@FormParam("imageName") String imageName,
-			@FormParam("imageTag") String imageTag,
-			@FormParam("isPublic") String isPublic) throws HibernateException {
+	public Response addImage(@QueryParam("dockerFilePath") String dockerFilePath,
+			@QueryParam("repertory") String repertory,
+			@QueryParam("userId") String userId,
+			@QueryParam("imageName") String imageName,
+			@QueryParam("imageTag") String imageTag,
+			@QueryParam("isPublic") String isPublic) throws HibernateException {
 
 		URL xmlpath = this.getClass().getClassLoader().getResource("/");
 		System.out.println(xmlpath.getFile());

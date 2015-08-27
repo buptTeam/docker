@@ -8,6 +8,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -34,9 +35,9 @@ public class ContainerBean extends HibernateBase {
 
 	@POST
 	public Response createContainer(
-			@FormParam("containerName") String containerName,
-			@FormParam("userId") String userId, @FormParam("cmd") String cmd,
-			@FormParam("imageName") String imageName) throws HibernateException {
+			@QueryParam("containerName") String containerName,
+			@QueryParam("userId") String userId, @QueryParam("cmd") String cmd,
+			@QueryParam("imageName") String imageName) throws HibernateException {
 		DockerClient dockerClient = MyDockerClient.getDockerClient();
 		try {
 			String[] cmdarr =cmd.split(" ");
