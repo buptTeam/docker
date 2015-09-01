@@ -1,16 +1,14 @@
 package bean;
-
 import java.io.Serializable;
+import java.net.URI;
 import java.util.List;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -297,8 +295,7 @@ public class ContainerBean extends HibernateBase {
 	
 	@GET
 	@Path("log/id/{id}")
-	public Response getlogByImageName(@PathParam("id") int id,
-			@PathParam("name") String name) throws HibernateException {
+	public Response getlogByImageName(@PathParam("id") int id) throws HibernateException {
 		try {
 			System.out.println("hello");
 			String queryString = "from Container where id=?";
@@ -354,6 +351,95 @@ public class ContainerBean extends HibernateBase {
 		}
 
 	}
+	
+	@GET
+	@Path("attach/id/{id}")
+	public Response getAttachByid(@PathParam("id") int id,
+			@PathParam("name") String name) throws HibernateException {
+	
+			System.out.println("hello");
+			String queryString = "from Container where id=?";
+			beginTransaction();
+			Query query = session.createQuery(queryString);
+			query.setParameter(0, id);
+			List<model.Container> containers = query.list();
+			String Containerid = containers.get(0).getContainerId();
+			
+		//	Containerid="ef6d2a538c33";
+//			AttachContainerTestCallback callback = new AttachContainerTestCallback() {
+//		        @Override
+//		        public void onNext(Frame frame) {
+//		            System.out.println("type"+ frame.getStreamType());
+//		            super.onNext(frame);
+//		        };
+//		    };
+//		    DockerClient dockerClient = MyDockerClient.getDockerClient();
+//		    dockerClient.attachContainerCmd(Containerid).withStdErr().withStdOut().withFollowStream().withLogs().exec(callback);
+//			
+//			Containerid="7fe7f250c7f9/stop"
+//			String testUrlString = "http://10.10.10.4:"
+//					+ Global.swarm_port + "/containers/"+Containerid+"/attach?logs=1&stream=0&stdout=1";
+//			System.out.println("url" + testUrlString);
+//			HttpClient httpClient = new HttpClient();
+//			
+//			PostMethod postMethod = new PostMethod(testUrlString);
+		try {
+//			httpClient.executeMethod(postMethod);
+//			InputStream text = postMethod.getResponseBodyAsStream();
+//			
+//			BufferedReader reader=new BufferedReader(new InputStreamReader(text,postMethod.getRequestCharSet()));  
+//            String tempbf;   
+//            StringBuffer html=new StringBuffer(100);   
+//            while((tempbf=reader.readLine())!=null){   
+//            html.append(tempbf);   
+//            }  
+//            text.close();  
+//          
+//            //assertEquals("text/plain", postMethod.getResponseHeader(
+//            //        "Content-Type").getValue());
+//            //Header contentLengthHeader = postMethod
+//             //       .getResponseHeader("Content-Length");
+//         //  / assertNull(contentLengthHeader == null ? "null"
+//               //     : contentLengthHeader.getValue(), contentLengthHeader);
+//			
+//			int StatusCode= postMethod.getStatusCode();
+//			String mes="";
+//			System.out.println("get status code");
+//			if(StatusCode==101){
+//				mes="no error, hints proxy about hijacking";
+//			}
+//			if(StatusCode==200){
+//				mes="no error, no upgrade header found";
+//			}
+//			if(StatusCode==404){
+//				mes="no such container";
+//			}
+//			if(StatusCode==500){
+//				mes="server error";
+//			}
+//			if(StatusCode==400){
+//				mes="bad parameter";
+//			}
+////			
+////			ObjectMapper mapper = new ObjectMapper();
+			URI url=new URI("http://166.111.143.224:8080/docker_new/console.jsp?id="+Containerid);
+
+			//Response.created(url);
+		return	Response.seeOther(url).build();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			//return ParseToReponse.parse("2", e.getMessage(), null, 0);
+		}finally{
+			//postMethod.releaseConnection();
+		}
+		return null;
+
+	}
+	
+	
+	
+	
 	
 //	/containers/4fa6e0f0c678/logs?stderr=1&stdout=1&timestamps=1&follow=1&tail=10
 	// @GET

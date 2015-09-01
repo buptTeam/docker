@@ -1,26 +1,43 @@
 package bean;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import model.Image;
-import model.User;
-
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.wink.common.internal.utils.MediaTypeUtils;
+import org.apache.wink.common.model.multipart.InMultiPart;
+import org.apache.wink.common.model.multipart.InPart;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.SearchItem;
 import com.github.dockerjava.core.command.BuildImageResultCallback;
@@ -37,6 +54,62 @@ public class ImageBean extends HibernateBase {
 		super();
 	}
 
+	@Path("uploadDockerfile")
+	@POST
+	@Produces( MediaType.TEXT_PLAIN)
+	@Consumes( MediaTypeUtils.MULTIPART_FORM_DATA)
+	public Response uploadFiles( @Context HttpServletRequest request,InMultiPart inMP) throws IOException {
+		String mesString=null;
+		String fileNameString=null;
+		  try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		  DiskFileItemFactory factory = new DiskFileItemFactory();
+		  ServletFileUpload upload = new ServletFileUpload(factory);
+		  try {
+		   List items = upload.parseRequest(request);
+		   Iterator itr = items.iterator();
+		   while (itr.hasNext()) {
+		    FileItem item = (FileItem) itr.next();
+		    if (item.isFormField()) {
+		     System.out.println("表单参数名:" + item.getFieldName() + "，表单参数值:" + item.getString("UTF-8"));
+		    } else {
+		     if (item.getName() != null && !item.getName().equals("")) {
+		      System.out.println("上传文件的大小:" + item.getSize());
+		      System.out.println("上传文件的类型:" + item.getContentType());
+		      // item.getName()返回上传文件在客户端的完整路径名称
+		      System.out.println("上传文件的名称:" + item.getName());
+		      fileNameString=item.getName();
+		      File tempFile = new File(item.getName());
+
+		      File file = new File(request.getSession().getServletContext().getRealPath("/files"), item.getName());
+		      System.out.println(request.getSession().getServletContext().getRealPath("/files"));
+
+		      item.write(file);
+		     // request.setAttribute("upload.message", );
+		      mesString="successfully";
+		     }else{
+		    	 mesString="no file selected";
+		    //  request.setAttribute("upload.message", );
+		     }
+		    }
+		   }
+		  }catch(FileUploadException e){
+		   e.printStackTrace();
+		   return ParseToReponse.parse("2",  e.getMessage(),fileNameString ,0);
+		  } catch (Exception e) {
+		   e.printStackTrace();
+		   request.setAttribute("upload.message", "上传文件失败！");
+		   return ParseToReponse.parse("2",  e.getMessage(),null , 0);
+		  }
+		  
+		  return ParseToReponse.parse("1",  mesString,fileNameString , 0);
+		
+	}
+	
 	@POST
 	public Response addImage(@QueryParam("dockerFilePath") String dockerFilePath,
 			@QueryParam("repertory") String repertory,
@@ -50,7 +123,7 @@ public class ImageBean extends HibernateBase {
 
 		try {
 			File file1 = new File(xmlpath.getFile());
-			String rootPath = file1.getParentFile().getParent() + "/";
+			String rootPath = file1.getParentFile().getParent() + "/files/";
 			System.out.println(rootPath + dockerFilePath);
 			File file = new File(rootPath + dockerFilePath);
 			if (file.exists()) {
