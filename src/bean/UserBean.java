@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -27,9 +28,9 @@ public class UserBean extends HibernateBase {
 	}
 
 	@POST
-	public Response addUser(@QueryParam ("name") String name,
-			@QueryParam("password") String password,
-			@QueryParam("mail") String mail) throws HibernateException {
+	public Response addUser(@FormParam ("name") String name,
+			@FormParam("password") String password,
+			@FormParam("mail") String mail) throws HibernateException {
 		try {
 			System.out.println("name"+name+"password"+password+"mail"+mail);
 			User user = new User(name, password, mail);

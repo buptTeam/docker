@@ -16,19 +16,21 @@ public class MyHttpClientPost {
 	
 	public static void main(String[] args) {
 		System.out.println("start");
-		String testUrlString = "http://166.111.143.224:8080/docker_new/api/container/start/id/13";
+		String testUrlString = "http://166.111.143.224:8080/docker_new/api/image";
 		HttpClient httpClient = new HttpClient();
 		PostMethod postMethod = new PostMethod(testUrlString);
 		postMethod.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "UTF-8");
-    	NameValuePair[] data = { new NameValuePair("containerName", "consoleContainer"),
-				new NameValuePair("userId", "1"), //这个长度为4-20
-				new NameValuePair("cmd", "/bin/bash"),
-				new NameValuePair("imageName", "ubuntu:14.04")
+    	NameValuePair[] data = { new NameValuePair("dockerFilePath", "file1.txt"),
+				new NameValuePair("repertory", "xiaoping"), //这个长度为4-20
+				new NameValuePair("userId", "1"),
+				new NameValuePair("imageName", "ubuntu"),
+				new NameValuePair("imageTag", "xp1"),
+				new NameValuePair("isPublic", "1")
     	
 		};
     	
     	
-		//postMethod.setRequestBody(data);
+		postMethod.setRequestBody(data);
 	
 		try {
 			httpClient.executeMethod(postMethod);

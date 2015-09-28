@@ -14,6 +14,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -56,8 +57,6 @@ public class ImageBean extends HibernateBase {
 
 	@Path("uploadDockerfile")
 	@POST
-	@Produces( MediaType.TEXT_PLAIN)
-	@Consumes( MediaTypeUtils.MULTIPART_FORM_DATA)
 	public Response uploadFiles( @Context HttpServletRequest request,InMultiPart inMP) throws IOException {
 		String mesString=null;
 		String fileNameString=null;
@@ -102,7 +101,7 @@ public class ImageBean extends HibernateBase {
 		   return ParseToReponse.parse("2",  e.getMessage(),fileNameString ,0);
 		  } catch (Exception e) {
 		   e.printStackTrace();
-		   request.setAttribute("upload.message", "上传文件失败！");
+		 //  request.setAttribute("upload.message", "上传文件失败！");
 		   return ParseToReponse.parse("2",  e.getMessage(),null , 0);
 		  }
 		  
@@ -111,12 +110,12 @@ public class ImageBean extends HibernateBase {
 	}
 	
 	@POST
-	public Response addImage(@QueryParam("dockerFilePath") String dockerFilePath,
-			@QueryParam("repertory") String repertory,
-			@QueryParam("userId") String userId,
-			@QueryParam("imageName") String imageName,
-			@QueryParam("imageTag") String imageTag,
-			@QueryParam("isPublic") String isPublic) throws HibernateException {
+	public Response addImage(@FormParam("dockerFilePath") String dockerFilePath,
+			@FormParam("repertory") String repertory,
+			@FormParam("userId") String userId,
+			@FormParam("imageName") String imageName,
+			@FormParam("imageTag") String imageTag,
+			@FormParam("isPublic") String isPublic) throws HibernateException {
 
 		URL xmlpath = this.getClass().getClassLoader().getResource("/");
 		System.out.println(xmlpath.getFile());

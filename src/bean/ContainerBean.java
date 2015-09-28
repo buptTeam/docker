@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -33,9 +34,9 @@ public class ContainerBean extends HibernateBase {
 
 	@POST
 	public Response createContainer(
-			@QueryParam("containerName") String containerName,
-			@QueryParam("userId") String userId, @QueryParam("cmd") String cmd,
-			@QueryParam("imageName") String imageName) throws HibernateException {
+			@FormParam("containerName") String containerName,
+			@FormParam("userId") String userId, @FormParam("cmd") String cmd,
+			@FormParam("imageName") String imageName) throws HibernateException {
 		DockerClient dockerClient = MyDockerClient.getDockerClient();
 		try {
 			String[] cmdarr =cmd.split(" ");
