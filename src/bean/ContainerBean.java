@@ -39,7 +39,9 @@ public class ContainerBean extends HibernateBase {
 			@FormParam("imageName") String imageName) throws HibernateException {
 		DockerClient dockerClient = MyDockerClient.getDockerClient();
 		try {
-			String[] cmdarr =cmd.split(" ");
+			String[] cmdarr ={};
+			if(!("".equals(cmd)||cmd==null))
+					cmdarr =cmd.split(" ");
 			CreateContainerResponse ccResponse = dockerClient
 					.createContainerCmd(imageName).withName(containerName)
 					.withTty(true).withStdinOpen(true).withCmd(cmdarr).exec();
