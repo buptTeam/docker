@@ -152,8 +152,10 @@ public class ImageBean extends HibernateBase {
 			List<com.github.dockerjava.api.model.Image> imagelist = dockerClient
 					.listImagesCmd().exec();
 			String imageLongId = "";
+			System.out.println("imageFullNname"+imageFullNname);
 			for (int i = 0; i < imagelist.size(); i++) {
 				String imageNameTemp = imagelist.get(i).getRepoTags()[0];
+				System.out.println("imageNameTemp"+imageNameTemp);
 				if (imageNameTemp.equals(imageFullNname)) {
 					imageLongId = imagelist.get(i).getId();
 				}
@@ -282,9 +284,9 @@ public class ImageBean extends HibernateBase {
 	}
 	
 
-	@DELETE
-	@Path("{id}")
-	public Response deleteUser(@PathParam("id") int id) {
+	@GET
+	@Path("delete")
+	public Response deleteUser(@QueryParam("id") int id) {
 		try {
 			beginTransaction();
 			Image image = (Image) session.load(Image.class, id);

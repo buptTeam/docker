@@ -26,7 +26,7 @@ function startConnection(url) {
 
 function WSonOpen() {
 
-	Log("连接建立成功，可以开始输入shell命令啦<br/>", "OK");
+	Log("连接建立成功，可以开始输入shell命令了<br/>", "OK");
 
 	//ws.send("login:" + document.getElementById("txtName").value);
 };
