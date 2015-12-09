@@ -3,7 +3,7 @@ var WebSocketsExist = true;
 var containerId = "";
 var swarmHost = "166.111.143.224:9375";
 function startConnection(url) {
-	Log("正在建立连接。。。<br/>", "OK");
+	Log("connecting to server。。。<br/>", "OK");
 	try {
 		if ("WebSocket" in window) {
 			ws = new WebSocket("ws://" + url);
@@ -26,7 +26,7 @@ function startConnection(url) {
 
 function WSonOpen() {
 
-	Log("连接建立成功，可以开始输入shell命令了<br/>", "OK");
+	Log("create connection successfully, you can start to type command<br/>", "OK");
 
 	//ws.send("login:" + document.getElementById("txtName").value);
 };
@@ -37,19 +37,19 @@ function WSonMessage(event) {
 };
 
 function WSonClose() {
-	Log("失去连接", "ERROR");
+	Log("lost connection", "ERROR");
 };
 
 function WSonError() {
 
-	Log("远程连接中断。", "ERROR");
+	Log("remote server terminate。", "ERROR");
 };
 
 function SendDataClicked(mes) {
 	try {
 		//console.info("click"+(ws.readyState));
 		if(ws.readyState==2||ws.readyState==3){
-			Log("连接不可用<br/>", "ERROR");
+			Log("connection useless<br/>", "ERROR");
 			return 0;
 		}
 			
@@ -118,7 +118,7 @@ Init=function(id) {
 				//document.getElementById("Connection").value =url ;
 				;
 			} else {
-				Log("您的浏览器不支持WebSocket。请选择其他的浏览器再尝试连接服务器。", "ERROR");
+				Log("your browser did not support WebSocket,change another browser。", "ERROR");
 				//document.getElementById("ToggleConnection").disabled = true;
 			}
 			startConnection(url);

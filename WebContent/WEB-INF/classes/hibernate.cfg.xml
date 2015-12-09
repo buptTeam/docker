@@ -5,8 +5,8 @@
 <hibernate-configuration>
     <session-factory >
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.password">cloud</property>
-        <property name="hibernate.connection.url">jdbc:mysql://219.243.208.130:3306/docker</property>
+        <property name="hibernate.connection.password">tsinghua</property>
+        <property name="hibernate.connection.url">jdbc:mysql://166.111.143.224:3306/docker</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.default_catalog">docker</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
